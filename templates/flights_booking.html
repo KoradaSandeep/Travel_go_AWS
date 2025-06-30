@@ -1,0 +1,454 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .website-name {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4f46e5;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+        }
+
+        .booking-container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e0;
+            margin-top: 5rem;
+            margin-bottom: auto;
+        }
+
+        .booking-container h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #4f46e5;
+            margin-bottom: 1rem;
+        }
+
+        .flight-info {
+            background-color: #f8faff;
+            border: 1px solid #e0e7ff;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .flight-info p {
+            margin: 0.5rem 0;
+        }
+
+        .booking-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-container input[type="number"],
+        .booking-container select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            color: #4a5568;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .booking-container select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .guest-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .guest-group {
+                flex-direction: row;
+            }
+            .guest-group label {
+                flex: 1;
+            }
+        }
+
+        .booking-container button[type="submit"] {
+            background-image: linear-gradient(to right, #6366f1, #8b5cf6);
+            color: white;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-container button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #cbd5e0;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button:hover {
+            background-color: #a0aec0;
+            transform: translateY(-2px);
+        }
+
+        .seat-display {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #4a5568;
+            text-align: left;
+            padding-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelEasy</div>
+    <div class="booking-container">
+        <h2>Complete Your Booking</h2>
+        <div class="flight-info">
+            <p><strong>Flight:</strong> {{ flight_id }}</p>
+            <p><strong>Route:</strong> {{ source }} to {{ destination }}</p>
+            <p><strong>Departure:</strong> {{ departure_date }}</p>
+            {% if return_date %}
+                <p><strong>Return:</strong> {{ return_date }}</p>
+            {% endif %}
+        </div>
+        <form method="POST" action="{{ url_for('booking') }}" onsubmit="return validateFlightBooking()">
+            <input type="hidden" name="booking_type" value="flights">
+            <input type="hidden" name="flight_id" value="{{ flight_id }}">
+            <input type="hidden" name="source" value="{{ source }}">
+            <input type="hidden" name="destination" value="{{ destination }}">
+            <input type="hidden" name="departure_date" value="{{ departure_date }}">
+            {% if return_date %}
+                <input type="hidden" name="return_date" value="{{ return_date }}">
+            {% endif %}
+            <div class="guest-group">
+                <label>Adults: <input type="number" name="adults" id="adultsFlight" min="1" value="1" required onchange="generateFlightSeats()"></label>
+                <label>Children: <input type="number" name="children" min="0" value="0"></label>
+            </div>
+            <select name="flight_class" required>
+                <option value="">Select Class</option>
+                <option value="Economy">Economy</option>
+                <option value="Premium Economy">Premium Economy</option>
+                <option value="Business">Business</option>
+                <option value="First Class">First Class</option>
+            </select>
+            <div class="seat-display">
+                <p>Assigned Seat(s): <span id="assignedFlightSeats">N/A</span></p>
+                <input type="hidden" name="generated_seats" id="generatedFlightSeatsInput">
+            </div>
+            <button type="submit">Confirm Booking</button>
+        </form> 
+        <a href="{{ url_for('flights_select') }}" class="back-button">Back to Flight Selection</a>
+    </div>
+    <script>
+        function generateRandomFlightSeat() {
+            const row = Math.floor(Math.random() * 30) + 1; // Rows 1-30
+            const seatChar = String.fromCharCode(65 + Math.floor(Math.random() * 6)); // A-F
+            return `F${row}${seatChar}`;
+        }
+        function generateFlightSeats() {
+            const adults = parseInt(document.getElementById('adultsFlight').value);
+            let seats = [];
+            for (let i = 0; i < adults; i++) {
+                seats.push(generateRandomFlightSeat());
+            }
+            document.getElementById('assignedFlightSeats').textContent = seats.join(', ');
+            document.getElementById('generatedFlightSeatsInput').value = seats.join(',');
+        }
+        function validateFlightBooking() {
+            return true;
+        }
+        document.addEventListener('DOMContentLoaded', generateFlightSeats);
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #F8F5ED; /* Soft Cream/Off-White */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem; /* Increased padding */
+            box-sizing: border-box;
+            position: relative;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+        }
+
+        .website-name {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; /* Larger font size */
+            font-weight: 700;
+            color: #B8860B; /* Dark Goldenrod */
+            padding: 0.75rem 1.5rem; /* More padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            background-color: rgba(255, 255, 255, 0.9); /* More opaque background */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            z-index: 10;
+            letter-spacing: 0.05em; /* Slight letter spacing */
+        }
+
+        .booking-container {
+            background-color: #FFFFFF; /* Pure White */
+            padding: 3rem; /* More generous padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15); /* Pronounced, soft shadow */
+            text-align: center;
+            width: 100%;
+            max-width: 550px; /* Slightly wider for forms */
+            box-sizing: border-box;
+            border: 1px solid #D4D4D4; /* Thin, light border */
+            margin-top: 7rem; /* Push content down more */
+            margin-bottom: auto;
+        }
+
+        .booking-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem; /* Larger heading */
+            font-weight: 700;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+            margin-bottom: 2.5rem; /* More space below heading */
+            letter-spacing: 0.03em;
+        }
+
+        .flight-info {
+            background-color: #FDFCF9; /* Very light cream */
+            border: 1px solid #E0E0E0; /* Light gray border */
+            border-radius: 0.75rem;
+            padding: 1.8rem; /* More padding */
+            margin-bottom: 2rem;
+            text-align: left;
+            font-size: 1.15rem; /* Slightly larger text */
+            color: #6B705C; /* Muted Olive Green */
+        }
+
+        .flight-info p {
+            margin: 0.6rem 0;
+        }
+
+        .flight-info strong {
+            color: #3A3B3C; /* Deep Charcoal Gray */
+            font-weight: 600;
+        }
+
+        .booking-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* More space between form elements */
+            margin-bottom: 2rem;
+        }
+
+        .booking-container input[type="number"],
+        .booking-container select {
+            width: 100%;
+            padding: 1.2rem 1.5rem; /* More padding */
+            border: 1px solid #D4D4D4;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            color: #6B705C;
+            background-color: #FDFCF9;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .booking-container select:focus {
+            border-color: #B8860B; /* Dark Goldenrod on focus */
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.2); /* Gold shadow on focus */
+        }
+
+        .guest-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        @media (min-width: 640px) {
+            .guest-group {
+                flex-direction: row;
+            }
+            .guest-group label {
+                flex: 1;
+            }
+        }
+
+        .booking-container button[type="submit"] {
+            background-color: #B8860B; /* Dark Goldenrod */
+            color: white;
+            padding: 1.2rem 1.8rem; /* More padding */
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.3rem; /* Larger font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            letter-spacing: 0.05em;
+        }
+
+        .booking-container button[type="submit"]:hover {
+            background-color: #DAA520; /* Lighter Goldenrod on hover */
+            transform: translateY(-4px); /* More lift */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25); /* Even stronger shadow */
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.9rem 1.8rem; /* More padding */
+            background-color: #E0E0E0; /* Light gray */
+            color: #6B705C; /* Muted Olive Green */
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .back-button:hover {
+            background-color: #C0C0C0; /* Darker gray on hover */
+            color: #3A3B3C; /* Deep Charcoal Gray on hover */
+            transform: translateY(-2px);
+        }
+
+        .seat-display {
+            margin-top: 1rem;
+            font-size: 1.05rem;
+            color: #6B705C;
+            text-align: left;
+            padding-left: 0.5rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelGo</div>
+    <div class="booking-container">
+        <h2>Complete Your Booking</h2>
+        <div class="flight-info">
+            <p><strong>Flight:</strong> {{ flight_id }}</p>
+            <p><strong>Route:</strong> {{ source }} to {{ destination }}</p>
+            <p><strong>Departure:</strong> {{ departure_date }}</p>
+            {% if return_date %}
+                <p><strong>Return:</strong> {{ return_date }}</p>
+            {% endif %}
+        </div>
+        <form method="POST" action="{{ url_for('booking') }}" onsubmit="return validateFlightBooking()">
+            <input type="hidden" name="booking_type" value="flights">
+            <input type="hidden" name="flight_id" value="{{ flight_id }}">
+            <input type="hidden" name="source" value="{{ source }}">
+            <input type="hidden" name="destination" value="{{ destination }}">
+            <input type="hidden" name="departure_date" value="{{ departure_date }}">
+            {% if return_date %}
+                <input type="hidden" name="return_date" value="{{ return_date }}">
+            {% endif %}
+            <div class="guest-group">
+                <label>Adults: <input type="number" name="adults" id="adultsFlight" min="1" value="1" required onchange="generateFlightSeats()"></label>
+                <label>Children: <input type="number" name="children" min="0" value="0"></label>
+            </div>
+            <select name="flight_class" required>
+                <option value="">Select Class</option>
+                <option value="Economy">Economy</option>
+                <option value="Premium Economy">Premium Economy</option>
+                <option value="Business">Business</option>
+                <option value="First Class">First Class</option>
+            </select>
+            <div class="seat-display">
+                <p>Assigned Seat(s): <span id="assignedFlightSeats">N/A</span></p>
+                <input type="hidden" name="generated_seats" id="generatedFlightSeatsInput">
+            </div>
+            <button type="submit">Confirm Booking</button>
+        </form> 
+        <a href="{{ url_for('flights_select') }}" class="back-button">Back to Flight Selection</a>
+    </div>
+    <script>
+        function generateRandomFlightSeat() {
+            const row = Math.floor(Math.random() * 30) + 1; // Rows 1-30
+            const seatChar = String.fromCharCode(65 + Math.floor(Math.random() * 6)); // A-F
+            return `F${row}${seatChar}`;
+        }
+        function generateFlightSeats() {
+            const adults = parseInt(document.getElementById('adultsFlight').value);
+            let seats = [];
+            for (let i = 0; i < adults; i++) {
+                seats.push(generateRandomFlightSeat());
+            }
+            document.getElementById('assignedFlightSeats').textContent = seats.join(', ');
+            document.getElementById('generatedFlightSeatsInput').value = seats.join(',');
+        }
+        function validateFlightBooking() {
+            return true;
+        }
+        document.addEventListener('DOMContentLoaded', generateFlightSeats);
+    </script>
+</body>
+</html>

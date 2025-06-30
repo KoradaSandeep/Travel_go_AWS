@@ -1,0 +1,440 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
+            background-color: #e2e8f0; /* Light grayish-blue background for the body */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the start (top) */
+            align-items: center; /* Center horizontally for the main content */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            margin: 0;
+            padding: 1rem; /* Add some padding for smaller screens */
+            box-sizing: border-box;
+            position: relative; /* Needed for absolute positioning of TravelEasy */
+        }
+        .website-name {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4f46e5; /* Primary indigo color */
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly translucent background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 10; /* Ensure it stays on top */
+        }
+        .booking-container {
+            background-color: #ffffff; /* White background for the booking box */
+            padding: 2.5rem; /* More generous padding */
+            border-radius: 1.5rem; /* Rounded corners for the box */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Soft, larger shadow for depth */
+            text-align: center;
+            width: 100%;
+            max-width: 500px; /* Max width for the form container */
+            box-sizing: border-box;
+            border: 1px solid #cbd5e0; /* Subtle border */
+            margin-top: 5rem; /* Push content down to make space for the website name */
+            margin-bottom: auto; /* Push container towards the center/top if space allows */
+        }
+        .booking-container h2 {
+            font-size: 2.25rem; /* Larger heading */
+            font-weight: 700;
+            color: #4f46e5; /* Primary indigo color */
+            margin-bottom: 2rem; /* More space below heading */
+        }
+
+        .booking-container form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+            gap: 1.25rem; /* Space between form elements */
+            margin-bottom: 1.5rem; /* Space below the form */
+        }
+
+        .booking-container input[type="text"],
+        .booking-container input[type="date"],
+        .booking-container input[type="number"],
+        .booking-container select,
+        .booking-container textarea {
+            width: 100%; /* Full width for inputs */
+            padding: 1rem 1.25rem; /* Increased padding inside inputs */
+            border: 1px solid #cbd5e0; /* Light border */
+            border-radius: 0.75rem; /* Rounded input fields */
+            font-size: 1.1rem;
+            color: #4a5568; /* Darker text color */
+            outline: none; /* Remove outline on focus */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+            box-sizing: border-box;
+        }
+
+        .booking-container input[type="text"]:focus,
+        .booking-container input[type="date"]:focus,
+        .booking-container input[type="number"]:focus,
+        .booking-container select:focus,
+        .booking-container textarea:focus {
+            border-color: #6366f1; /* Highlight border on focus */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Soft shadow on focus */
+        }
+
+        .guest-group { /* For consistent styling with flight/hotel */
+            display: flex;
+            flex-direction: column; /* Stack inputs vertically on small screens */
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) { /* On larger screens, make inputs side-by-side */
+            .guest-group {
+                flex-direction: row;
+            }
+            .guest-group label {
+                flex: 1; /* Distribute space equally */
+            }
+        }
+
+        .booking-container button[type="submit"] {
+            background-image: linear-gradient(to right, #6366f1, #8b5cf6); /* Gradient button background */
+            color: white;
+            padding: 1rem 1.5rem; /* Generous padding for the button */
+            border: none;
+            border-radius: 0.75rem; /* Rounded button */
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effects */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Button shadow */
+        }
+
+        .booking-container button[type="submit"]:hover {
+            transform: translateY(-3px); /* Lift button on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+        }
+
+        .back-button {
+            display: inline-block; /* Allows margin and padding to be applied */
+            margin-top: 1.5rem; /* Space above the button */
+            padding: 0.75rem 1.5rem;
+            background-color: #cbd5e0; /* Light grey background for back button */
+            color: #4a5568; /* Darker grey text color */
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button:hover {
+            background-color: #a0aec0; /* Darker grey on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Custom Alert Message Styling */
+        #customAlert {
+            display: none; /* Hidden by default */
+            background-color: #fca5a5; /* Light red background */
+            color: #b91c1c; /* Dark red text */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem; /* Space below alert */
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid #ef4444; /* Red border */
+        }
+
+        .seat-display {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #4a5568;
+            text-align: left;
+            padding-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelEasy</div>
+
+    <div class="booking-container">
+        <h2>Book Train: {{ train_id }}</h2> {# Display selected train ID #}
+        <div id="customAlert"></div>
+        <form method="POST" action="{{ url_for('booking') }}" onsubmit="return validateTrainBooking()">
+            <input type="hidden" name="booking_type" value="trains"> {# Hidden field for booking type #}
+            <input type="hidden" name="train_id" value="{{ train_id }}"> {# Pass train_id #}
+            <input type="text" name="source" id="sourceTrain" placeholder="From (City/Station)" value="{{ source }}" readonly required> {# Pre-fill and make readonly #}
+            <input type="text" name="destination" id="destinationTrain" placeholder="To (City/Station)" value="{{ destination }}" readonly required> {# Pre-fill and make readonly #}
+            <input type="date" name="travel_date" value="{{ travel_date }}" readonly required> {# Pre-fill and make readonly #}
+            <div class="guest-group">
+                <label>Adults: <input type="number" name="adults" id="adultsTrain" min="1" value="1" required onchange="generateTrainSeats()"></label>
+                <label>Children: <input type="number" name="children" min="0" value="0"></label>
+            </div>
+            <select name="train_class" required>
+                <option value="">Select Class</option>
+                <option value="Sleeper">Sleeper (SL)</option>
+                <option value="AC3">AC 3 Tier (3A)</option>
+                <option value="AC2">AC 2 Tier (2A)</option>
+                <option value="AC1">AC First Class (1A)</option>
+                <option value="Chair Car">Chair Car (CC)</option>
+            </select>
+            <div class="seat-display">
+                <p>Assigned Seat(s): <span id="assignedTrainSeats">N/A</span></p>
+                <input type="hidden" name="generated_seats" id="generatedTrainSeatsInput">
+            </div>
+            <button type="submit">Book Now</button>
+        </form>
+        <a href="{{ url_for('trains_select') }}" class="back-button">Back to Train Selection</a> {# Changed back button #}
+    </div>
+    <script>
+        function generateRandomTrainSeat() {
+            const coachType = ['S', 'A', 'B', 'C'][Math.floor(Math.random() * 4)]; // Sleeper, AC, etc.
+            const coachNumber = Math.floor(Math.random() * 5) + 1; // Coach 1-5
+            const berthNumber = Math.floor(Math.random() * 72) + 1; // Berth 1-72
+            return `${coachType}${coachNumber}-B${berthNumber}`;
+        }
+        function generateTrainSeats() {
+            const adults = parseInt(document.getElementById('adultsTrain').value);
+            let seats = [];
+            for (let i = 0; i < adults; i++) {
+                seats.push(generateRandomTrainSeat());
+            }
+            document.getElementById('assignedTrainSeats').textContent = seats.join(', ');
+            document.getElementById('generatedTrainSeatsInput').value = seats.join(',');
+        }
+        function validateTrainBooking() {
+            return true;
+        }
+        document.addEventListener('DOMContentLoaded', generateTrainSeats);
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #F8F5ED; /* Soft Cream/Off-White */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem; /* Increased padding */
+            box-sizing: border-box;
+            position: relative;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+        }
+        .website-name {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; /* Larger font size */
+            font-weight: 700;
+            color: #B8860B; /* Dark Goldenrod */
+            padding: 0.75rem 1.5rem; /* More padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            background-color: rgba(255, 255, 255, 0.9); /* More opaque background */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            z-index: 10;
+            letter-spacing: 0.05em; /* Slight letter spacing */
+        }
+        .booking-container {
+            background-color: #FFFFFF; /* Pure White */
+            padding: 3rem; /* More generous padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15); /* Pronounced, soft shadow */
+            text-align: center;
+            width: 100%;
+            max-width: 550px; /* Slightly wider for forms */
+            box-sizing: border-box;
+            border: 1px solid #D4D4D4; /* Thin, light border */
+            margin-top: 7rem; /* Push content down more */
+            margin-bottom: auto;
+        }
+        .booking-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem; /* Larger heading */
+            font-weight: 700;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+            margin-bottom: 2.5rem; /* More space below heading */
+            letter-spacing: 0.03em;
+        }
+
+        .booking-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* More space between form elements */
+            margin-bottom: 2rem; /* Space below the form */
+        }
+
+        .booking-container input[type="text"],
+        .booking-container input[type="date"],
+        .booking-container input[type="number"],
+        .booking-container select,
+        .booking-container textarea {
+            width: 100%;
+            padding: 1.2rem 1.5rem; /* More padding */
+            border: 1px solid #D4D4D4; /* Light border */
+            border-radius: 0.75rem; /* Softer rounded input fields */
+            font-size: 1.1rem;
+            color: #6B705C; /* Muted Olive Green */
+            background-color: #FDFCF9; /* Very light cream */
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .booking-container input[type="text"]:focus,
+        .booking-container input[type="date"]:focus,
+        .booking-container input[type="number"]:focus,
+        .booking-container select:focus,
+        .booking-container textarea:focus {
+            border-color: #B8860B; /* Dark Goldenrod on focus */
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.2); /* Gold shadow on focus */
+        }
+
+        .guest-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        @media (min-width: 640px) {
+            .guest-group {
+                flex-direction: row;
+            }
+            .guest-group label {
+                flex: 1;
+            }
+        }
+
+        .booking-container button[type="submit"] {
+            background-color: #B8860B; /* Dark Goldenrod */
+            color: white;
+            padding: 1.2rem 1.8rem; /* More padding */
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.3rem; /* Larger font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            letter-spacing: 0.05em;
+        }
+
+        .booking-container button[type="submit"]:hover {
+            background-color: #DAA520; /* Lighter Goldenrod on hover */
+            transform: translateY(-4px); /* More lift */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25); /* Even stronger shadow */
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.9rem 1.8rem; /* More padding */
+            background-color: #E0E0E0; /* Light gray */
+            color: #6B705C; /* Muted Olive Green */
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .back-button:hover {
+            background-color: #C0C0C0; /* Darker gray on hover */
+            color: #3A3B3C; /* Deep Charcoal Gray on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Custom Alert Message Styling */
+        #customAlert {
+            display: none;
+            background-color: #FEE2E2; /* Light red */
+            color: #EF4444; /* Darker red */
+            padding: 1.2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 1px solid #FCA5A5; /* Red border */
+            text-align: left;
+        }
+
+        .seat-display {
+            margin-top: 1rem;
+            font-size: 1.05rem;
+            color: #6B705C;
+            text-align: left;
+            padding-left: 0.5rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelGo</div>
+
+    <div class="booking-container">
+        <h2>Book Train: {{ train_id }}</h2>
+        <div id="customAlert"></div>
+        <form method="POST" action="{{ url_for('booking') }}" onsubmit="return validateTrainBooking()">
+            <input type="hidden" name="booking_type" value="trains">
+            <input type="hidden" name="train_id" value="{{ train_id }}">
+            <input type="text" name="source" id="sourceTrain" placeholder="From (City/Station)" value="{{ source }}" readonly required>
+            <input type="text" name="destination" id="destinationTrain" placeholder="To (City/Station)" value="{{ destination }}" readonly required>
+            <input type="date" name="travel_date" value="{{ travel_date }}" readonly required>
+            <div class="guest-group">
+                <label>Adults: <input type="number" name="adults" id="adultsTrain" min="1" value="1" required onchange="generateTrainSeats()"></label>
+                <label>Children: <input type="number" name="children" min="0" value="0"></label>
+            </div>
+            <select name="train_class" required>
+                <option value="">Select Class</option>
+                <option value="Sleeper">Sleeper (SL)</option>
+                <option value="AC3">AC 3 Tier (3A)</option>
+                <option value="AC2">AC 2 Tier (2A)</option>
+                <option value="AC1">AC First Class (1A)</option>
+                <option value="Chair Car">Chair Car (CC)</option>
+            </select>
+            <div class="seat-display">
+                <p>Assigned Seat(s): <span id="assignedTrainSeats">N/A</span></p>
+                <input type="hidden" name="generated_seats" id="generatedTrainSeatsInput">
+            </div>
+            <button type="submit">Book Now</button>
+        </form>
+        <a href="{{ url_for('trains_select') }}" class="back-button">Back to Train Selection</a>
+    </div>
+    <script>
+        function generateRandomTrainSeat() {
+            const coachType = ['S', 'A', 'B', 'C'][Math.floor(Math.random() * 4)];
+            const coachNumber = Math.floor(Math.random() * 5) + 1;
+            const berthNumber = Math.floor(Math.random() * 72) + 1;
+            return `${coachType}${coachNumber}-B${berthNumber}`;
+        }
+        function generateTrainSeats() {
+            const adults = parseInt(document.getElementById('adultsTrain').value);
+            let seats = [];
+            for (let i = 0; i < adults; i++) {
+                seats.push(generateRandomTrainSeat());
+            }
+            document.getElementById('assignedTrainSeats').textContent = seats.join(', ');
+            document.getElementById('generatedTrainSeatsInput').value = seats.join(',');
+        }
+        function validateTrainBooking() {
+            return true;
+        }
+        document.addEventListener('DOMContentLoaded', generateTrainSeats);
+    </script>
+</body>
+</html>

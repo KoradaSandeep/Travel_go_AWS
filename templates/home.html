@@ -1,0 +1,913 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Booking - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
+            background-color: #f0f4f8; /* Light background */
+            color: #333;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between; /* Space between title and links */
+            align-items: center; /* Center items vertically */
+            background-color: #4f46e5; /* Navbar background color */
+            padding: 1rem 2rem; /* Padding for navbar */
+            border-radius: 0.5rem;
+            margin-bottom: 2rem; /* Space below navbar */
+        }
+        .navbar h2 {
+            color: white; /* Title color */
+            margin: 0; /* Remove default margin */
+            font-size: 2rem; /* Increase font size for title */
+            font-weight: 700; /* Bold font weight */
+        }
+        .navbar img {
+            width: 40px; /* Logo size */
+            margin-right: 0.5rem; /* Space between logo and title */
+        }
+        .navbar a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .navbar a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .logout-button {
+            color: white; /* Text color */
+            margin-left: 1rem; /* Space between links */
+            text-decoration: none; /* Remove underline */
+            font-weight: 600; /* Bold font weight */
+            background-color: #f56565; /* Red background for logout */
+            padding: 0.5rem 1rem; /* Padding for button */
+            border-radius: 0.5rem; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+        .logout-button:hover {
+            background-color: #c53030; /* Darker red on hover */
+        }
+        header {
+            background-image: linear-gradient(to right, #6366f1, #8b5cf6); /* Gradient background */
+            color: white;
+            padding: 2.5rem 1rem; /* More padding */
+            text-align: center;
+            border-bottom-left-radius: 1.5rem; /* Rounded corners */
+            border-bottom-right-radius: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-bottom: 2rem; /* Space below header */
+        }
+        h1 {
+            font-size: 3rem; /* Larger heading */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for depth */
+        }
+        header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+        .card-container {
+            display: flex; /* Flexbox for horizontal cards */
+            flex-wrap: wrap; /* Allow cards to wrap to the next line on smaller screens */
+            justify-content: center; /* Center cards horizontally */
+            gap: 1.5rem; /* Space between cards */
+            padding: 0 1rem; /* Padding on sides */
+            margin-bottom: 2rem;
+            flex-grow: 1; /* Allow container to grow and push notification to bottom */
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+            width: 100%; /* Default to full width on small screens */
+            max-width: 280px; /* Max width for cards on larger screens */
+            display: flex; /* Flex within card for content arrangement */
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center; /* Center content horizontally within card */
+            overflow: hidden; /* Ensure rounded corners clip content */
+        }
+        .card:hover {
+            transform: translateY(-0.75rem); /* Lift card on hover */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25); /* Stronger shadow on hover */
+        }
+        .card img {
+            width: 100%; /* Image takes full width of card */
+            height: 150px; /* Fixed height for consistency */
+            object-fit: cover; /* Cover the area, cropping if necessary */
+            border-radius: 1rem; /* Rounded corners for images */
+            margin-bottom: 1rem; /* Space below image */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            font-size: 1.75rem; /* Larger card title */
+            font-weight: 600;
+            color: #4f46e5; /* Primary color for titles */
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            font-size: 1rem;
+            color: #666;
+        }
+        .notification {
+            background-color: #e0f2fe; /* Light blue background */
+            border: 1px solid #90cdf4; /* Blue border */
+            border-radius: 1rem; /* Rounded corners */
+            padding: 1.5rem;
+            margin: 0 2rem 2rem 2rem; /* Margin on all sides, more bottom margin */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        }
+        .notification h4 {
+            font-size: 1.5rem;
+            color: #2b6cb0; /* Darker blue for notification title */
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        .notification p {
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+        .notification ul {
+            list-style: none; /* Remove bullet points */
+            padding: 0;
+            margin: 0.5rem 0 0;
+        }
+        .notification li {
+            background-color: #f8fafc; /* Slightly different background for list items */
+            border: 1px solid #cceeff;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-align: left; /* Align text to left within list item */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .cancel-button {
+            background-color: #f56565; /* Red background for cancel button */
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            float: right; /* Align to the right */
+        }
+        .cancel-button:hover {
+            background-color: #c53030; /* Darker red on hover */
+        }
+        .contact, .about {
+            padding: 2rem;
+            background-color: #f8fafc; /* Light background for sections */
+            border-radius: 1rem; /* Rounded corners */
+            margin: 2rem; /* Margin around sections */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .contact h4, .about h4 {
+            font-size: 2rem; /* Larger heading for sections */
+            color: #4f46e5; /* Primary color for section titles */
+            margin-bottom: 1rem; /* Space below section title */
+        }
+        .contact p, .about p {
+            font-size: 1.1rem; /* Font size for paragraph text */
+            color: #333; /* Text color */
+            margin-bottom: 0.5rem; /* Space between paragraphs */
+        }
+        footer {
+            background-color: #4f46e5; /* Footer background color */
+            color: white; /* Footer text color */
+            padding: 2rem; /* Padding for footer */
+            text-align: center; /* Center text in footer */
+            margin-top: auto; /* Push footer to the bottom */
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center items */
+            margin-bottom: 1rem; /* Space below content */
+        }
+        .footer-links {
+            display: flex; /* Flexbox for footer links */
+            justify-content: center; /* Center links */
+            margin-bottom: 1rem; /* Space below links */
+        }
+        .footer-links a {
+            color: white; /* Link color */
+            margin: 0 1rem; /* Space between links */
+            text-decoration: none; /* Remove underline */
+            font-weight: 600; /* Bold font weight */
+        }
+        .footer-links a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .social-icons {
+            margin: 1rem 0; /* Space above and below social icons */
+        }
+        .social-icons img {
+            width: 30px; /* Size of social icons */
+            margin: 0 0.5rem; /* Space between icons */
+        }
+        .newsletter {
+            margin: 1rem 0; /* Space above and below newsletter section */
+        }
+        .newsletter input {
+            padding: 0.5rem; /* Padding for input */
+            border-radius: 0.5rem; /* Rounded corners */
+            border: none; /* Remove border */
+            margin-right: 0.5rem; /* Space between input and button */
+        }
+        .newsletter button {
+            padding: 0.5rem 1rem; /* Padding for button */
+            border-radius: 0.5rem; /* Rounded corners */
+            border: none; /* Remove border */
+            background-color: #6366f1; /* Button background color */
+            color: white; /* Button text color */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        .newsletter button:hover {
+            background-color: #4f46e5; /* Darker button color on hover */
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Top border for separation */
+            padding-top: 1rem; /* Space above bottom text */
+        }
+        @media (min-width: 640px) { /* Small screens and up */
+            .card {
+                width: calc(50% - 2rem); /* Two cards per row with gap */
+            }
+        }
+        @media (min-width: 1024px) { /* Large screens and up */
+            .card {
+                width: calc(25% - 1.5rem); /* Four cards per row with gap */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div style="display: flex; align-items: center;">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ--jJJFEFnzASSokZuF_41XOGFRHrR3RLcnA&s" alt="Logo">
+            <h2>TravelEase</h2>
+        </div>
+        <div>
+            <a href="#bookings">Bookings</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+            <a href="{{ url_for('others') }}">Others</a>
+            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        </div>
+    </div>
+
+    <header>
+        <h1 style="font-size: 40px;font-weight: 800;">Welcome to TravelEase</h1>
+        <p>Book your entire trip in one place</p>
+    </header>
+
+    <div class="card-container">
+        <div class="card" onclick="location.href='{{ url_for('hotels') }}'">
+            <img src="https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2018/12/15/Pictures/_9f2b6346-ffd3-11e8-9457-b1b429387a4e.jpg" alt="Hotels">
+            <h3>Hotels</h3>
+            <p>Find the best stays worldwide</p>
+        </div>
+        <div class="card" onclick="location.href='{{ url_for('trains_search') }}'">
+            <img src="https://images.moneycontrol.com/static-mcnews/2023/02/7-budget-representative-image-vande-bharat.jpg?impolicy=website&width=1600&height=900" alt="Trains">
+            <h3>Trains</h3>
+            <p>Comfortable rail journeys</p>
+        </div>
+        <div class="card" onclick="location.href='{{ url_for('buses_search') }}'">
+            <img src="https://media.istockphoto.com/id/139994090/photo/red-double-decker-bus-london.jpg?s=612x612&w=0&k=20&c=PcrZglgrhF1DyyvI4Z0FEBUUJsGPWMivFF1alJmDA4A=" alt="Buses">
+            <h3>Buses</h3>
+            <p>Affordable road travel</p>
+        </div>
+        <div class="card" onclick="location.href='{{ url_for('flights_search') }}'">
+            <img src="https://t4.ftcdn.net/jpg/00/71/31/85/360_F_71318503_9g1UATIOZzwELZg2DZb7w4oaVyenhQkh.jpg" alt="Flights">
+            <h3>Flights</h3>
+            <p>Fly to your dream destinations</p>
+        </div>
+    </div>
+
+    <div class="notification" id="bookings">
+        <h4>Your Latest Bookings</h4>
+        {% if bookings %}
+            <ul>
+                {% for booking in bookings %}
+                    <li>
+                        <strong>{{ booking.type | capitalize }} Booking:</strong>
+                        {% if booking.destination %}
+                            To {{ booking.destination }}
+                        {% endif %}
+                        {% if booking.start_date and booking.end_date %}
+                            from {{ booking.start_date }} to {{ booking.end_date }}
+                        {% elif booking.start_date %}
+                            on {{ booking.start_date }}
+                        {% endif %}
+                        {% if booking.booked_at %}
+                            (Booked: {{ booking.booked_at.strftime('%Y-%m-%d %H:%M') }})
+                        {% endif %}
+                        <form action="{{ url_for('cancel_booking', booking_id=booking._id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="cancel-button">Cancel</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't made any bookings yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="contact" id="contact">
+        <h4>Contact Us</h4>
+        <p>If you have any questions or need assistance, feel free to reach out to us:</p>
+        <p>Email: support@travelease.com</p>
+        <p>Phone: +1 (555) 123-4567</p>
+        <p>Address: 123 Travel Lane, Wanderlust City, Country</p>
+    </div>
+
+    <div class="about" id="about">
+        <h4>About Us</h4>
+        <p>TravelEase is dedicated to making your travel experience seamless and enjoyable. We offer a wide range of services to cater to all your travel needs, from booking hotels and flights to arranging transportation.</p>
+        <p>Our mission is to provide the best travel solutions and ensure that every journey is memorable.</p>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#contact">Contact</a>
+                <a href="#about">About</a>
+                <a href="#bookings">Bookings</a>
+                <a href="{{ url_for('others') }}">Others</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank"><img src="https://freepnglogo.com/images/all_img/1730342312_black-facebook-logo.png" alt="Facebook"></a>
+                <a href="https://twitter.com" target="_blank"><img src="https://images.seeklogo.com/logo-png/31/1/twitter-logo-png_seeklogo-318424.png" alt="Twitter"></a>
+                <a href="https://instagram.com" target="_blank"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFc2W8wyGqyM8Ymeak3--V151BKeDHdYK5GA&s" alt="Instagram"></a>
+            </div>
+            <div class="newsletter">
+                <h4>Subscribe to our Newsletter</h4>
+                <form action="#" method="POST">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 TravelEase. All rights reserved. | Designed by YourName</p> -->
+             <!DOCTYPE html>
+             <html lang="en">
+             <head>
+                 <meta charset="UTF-8">
+                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                 <title>TravelEase - Your Journey, Our Priority</title>
+                 <script src="https://cdn.tailwindcss.com"></script>
+                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+                 <style>
+                     /* Base styles */
+                     body {
+                         font-family: 'Open Sans', sans-serif;
+                         background-color: #F8F5ED; /* Soft Cream/Off-White */
+                         color: #3A3B3C; /* Deep Charcoal Gray */
+                         min-height: 100vh;
+                         display: flex;
+                         flex-direction: column;
+                         line-height: 1.6;
+                     }
+             
+                     h1, h2, h3, h4 {
+                         font-family: 'Playfair Display', serif;
+                         color: #3A3B3C; /* Deep Charcoal Gray */
+                     }
+             
+                     /* Navbar */
+                     .navbar {
+                         background-color: #3A3B3C; /* Deep Charcoal Gray */
+                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                         margin: 1.5rem 2rem 2.5rem 2rem;
+                         border-radius: 0.75rem;
+                         display: flex;
+                         justify-content: space-between;
+                         align-items: center;
+                         padding: 1.2rem 2.5rem;
+                     }
+                     .navbar .logo-container {
+                         display: flex;
+                         align-items: center;
+                     }
+                     .navbar .logo-icon {
+                         font-size: 2.2rem; /* Size for the icon */
+                         margin-right: 0.6rem;
+                         color: #F8F5ED; /* Color for the icon */
+                         line-height: 1; /* Align with text */
+                         transform: rotate(45deg); /* Slight rotation for airplane */
+                         display: inline-block; /* Ensure transform applies */
+                     }
+                     .navbar h2 {
+                         color: #F8F5ED; /* Soft Cream */
+                         font-size: 2.4rem;
+                         font-weight: 700;
+                         letter-spacing: 0.05em;
+                         margin: 0;
+                     }
+                     .navbar a {
+                         color: #F8F5ED;
+                         margin: 0 1.2rem;
+                         text-decoration: none;
+                         font-weight: 600;
+                         font-size: 1.05rem;
+                         transition: color 0.2s ease, text-decoration 0.2s ease;
+                     }
+                     .navbar a:hover {
+                         color: #DAA520; /* Goldenrod */
+                         text-decoration: underline;
+                     }
+                     .navbar .logout-button {
+                         background-color: #DC143C; /* Crimson Red */
+                         padding: 0.6rem 1.4rem;
+                         border-radius: 0.6rem;
+                         transition: background-color 0.3s ease;
+                         margin-left: 1.5rem;
+                     }
+                     .navbar .logout-button:hover {
+                         background-color: #B22222; /* Firebrick */
+                     }
+             
+                     /* Header (Hero Section) */
+                     header {
+                         background-color: #6B705C; /* Muted Olive Green */
+                         color: #F8F5ED; /* Soft Cream */
+                         padding: 3.5rem 1.5rem;
+                         text-align: center;
+                         border-bottom-left-radius: 2rem;
+                         border-bottom-right-radius: 2rem;
+                         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+                         margin-bottom: 3rem;
+                     }
+                     header h1 {
+                         font-size: 4rem;
+                         font-weight: 700;
+                         margin-bottom: 1rem;
+                         text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+                         letter-spacing: 0.04em;
+                         color: #F8F5ED; /* Ensure heading color is cream */
+                     }
+                     header p {
+                         font-size: 1.5rem;
+                         opacity: 0.95;
+                         font-weight: 400;
+                     }
+             
+                     /* Card Container */
+                     .card-container {
+                         display: flex;
+                         flex-wrap: wrap;
+                         justify-content: center;
+                         gap: 2.5rem; /* Increased gap */
+                         padding: 0 2.5rem;
+                         margin-bottom: 3rem;
+                         flex-grow: 1;
+                     }
+             
+                     /* Card styles */
+                     .card {
+                         background-color: #FFFFFF; /* Pure White */
+                         border-radius: 1.2rem; /* Softer corners */
+                         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+                         padding: 2.5rem; /* More padding */
+                         text-align: center;
+                         cursor: pointer;
+                         transition: transform 0.3s ease, box-shadow 0.3s ease;
+                         width: 100%;
+                         max-width: 320px; /* Slightly larger max width */
+                         display: flex;
+                         flex-direction: column;
+                         align-items: center;
+                         overflow: hidden;
+                         border: 1px solid #E0E0E0; /* Light border */
+                     }
+                     .card:hover {
+                         transform: translateY(-0.8rem);
+                         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+                     }
+                     .card img {
+                         width: 100%;
+                         height: 200px; /* Taller images */
+                         object-fit: cover;
+                         border-radius: 0.8rem;
+                         margin-bottom: 1.8rem;
+                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                     }
+                     .card h3 {
+                         font-size: 2.2rem; /* Larger card title */
+                         font-weight: 700;
+                         color: #B8860B; /* Dark Goldenrod */
+                         margin-bottom: 1rem;
+                         letter-spacing: 0.02em;
+                     }
+                     .card p {
+                         font-size: 1.15rem; /* Larger text */
+                         color: #6B705C; /* Muted Olive Green */
+                         line-height: 1.5;
+                     }
+             
+                     /* Notification/Booking section */
+                     .notification, .contact, .about {
+                         background-color: #FFFFFF; /* Pure White */
+                         border: 1px solid #E0E0E0;
+                         border-radius: 1.2rem;
+                         padding: 3rem; /* More padding */
+                         margin: 0 2rem 3rem 2rem;
+                         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+                         width: calc(100% - 4rem);
+                         max-width: 900px; /* Wider sections */
+                         align-self: center; /* Center these blocks */
+                     }
+                     .notification h4, .contact h4, .about h4 {
+                         font-size: 2.5rem; /* Larger title */
+                         font-weight: 700;
+                         margin-bottom: 1.8rem;
+                         letter-spacing: 0.03em;
+                         text-align: center; /* Center heading */
+                     }
+                     .notification p, .contact p, .about p {
+                         font-size: 1.15rem;
+                         color: #6B705C;
+                         margin-bottom: 0.8rem;
+                         line-height: 1.6;
+                     }
+                     .notification ul {
+                         list-style: none;
+                         padding: 0;
+                         margin: 1.5rem 0 0;
+                     }
+                     .notification li {
+                         background-color: #FDFCF9; /* Very light cream */
+                         border: 1px solid #F0E68C; /* Lighter gold border */
+                         border-radius: 0.8rem;
+                         padding: 1.5rem; /* More padding */
+                         margin-bottom: 1rem;
+                         display: flex;
+                         justify-content: space-between;
+                         align-items: center;
+                         line-height: 1.4;
+                         gap: 1rem; /* Space between text and button */
+                         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+                         font-size: 1.05rem;
+                         color: #3A3B3C;
+                     }
+                     .notification li .booking-details {
+                         flex-grow: 1; /* Allows text to take up available space */
+                         word-break: break-word; /* Allows long words to break */
+                     }
+                     .notification li strong {
+                         color: #B8860B; /* Dark Goldenrod */
+                     }
+                     .cancel-button {
+                         background-color: #DC143C; /* Crimson Red */
+                         color: white;
+                         padding: 0.7rem 1.4rem;
+                         border: none;
+                         border-radius: 0.5rem;
+                         cursor: pointer;
+                         transition: background-color 0.3s ease;
+                         font-size: 1rem;
+                         white-space: nowrap; /* Prevent button text from wrapping */
+                         flex-shrink: 0; /* Prevent button from shrinking */
+                     }
+                     .cancel-button:hover {
+                         background-color: #B22222; /* Firebrick */
+                     }
+             
+                     /* Footer */
+                     footer {
+                         background-color: #3A3B3C; /* Deep Charcoal Gray */
+                         color: #F8F5ED; /* Soft Cream */
+                         padding: 2.5rem;
+                         text-align: center;
+                         margin-top: auto; /* Pushes footer to the bottom */
+                         width: 100%;
+                     }
+                     .footer-content {
+                         display: flex;
+                         flex-direction: column;
+                         align-items: center;
+                         margin-bottom: 1.5rem;
+                     }
+                     .footer-links {
+                         display: flex;
+                         justify-content: center;
+                         flex-wrap: wrap;
+                         margin-bottom: 1.5rem;
+                     }
+                     .footer-links a {
+                         color: #F8F5ED;
+                         margin: 0.6rem 1.2rem;
+                         text-decoration: none;
+                         font-weight: 600;
+                         font-size: 1.05rem;
+                         transition: color 0.2s ease, text-decoration 0.2s ease;
+                     }
+                     .footer-links a:hover {
+                         color: #DAA520; /* Goldenrod */
+                         text-decoration: underline;
+                     }
+                     .social-icons {
+                         margin: 1.5rem 0;
+                         display: flex;
+                         gap: 1.5rem;
+                     }
+                     .social-icons svg {
+                         width: 32px; /* Standard SVG icon size */
+                         height: 32px;
+                         fill: #F8F5ED; /* SVG fill color - soft cream */
+                         transition: fill 0.2s ease, transform 0.2s ease;
+                     }
+                     .social-icons a:hover svg {
+                         fill: #DAA520; /* Goldenrod on hover */
+                         transform: scale(1.1);
+                     }
+                     .newsletter h4 {
+                         font-size: 1.4rem;
+                         color: #F8F5ED;
+                         margin-bottom: 1rem;
+                         font-weight: 600;
+                     }
+                     .newsletter form {
+                         display: flex;
+                         flex-wrap: wrap;
+                         justify-content: center;
+                         gap: 0.8rem;
+                         max-width: 500px; /* Constrain form width */
+                         margin: 0 auto;
+                     }
+                     .newsletter input {
+                         padding: 0.8rem 1.2rem;
+                         border-radius: 0.6rem;
+                         border: none;
+                         background-color: #FDFCF9;
+                         color: #3A3B3C;
+                         font-size: 1rem;
+                         flex-grow: 1; /* Allows input to take space */
+                         min-width: 250px; /* Ensure input is not too small */
+                         outline: none;
+                     }
+                     .newsletter button {
+                         padding: 0.8rem 1.6rem;
+                         border-radius: 0.6rem;
+                         border: none;
+                         background-color: #DAA520; /* Goldenrod */
+                         color: white;
+                         cursor: pointer;
+                         font-weight: 600;
+                         font-size: 1rem;
+                         transition: background-color 0.2s ease;
+                         flex-shrink: 0;
+                     }
+                     .newsletter button:hover {
+                         background-color: #B8860B; /* Dark Goldenrod */
+                     }
+                     .footer-bottom {
+                         border-top: 1px solid rgba(255, 255, 255, 0.15);
+                         padding-top: 1.5rem;
+                         margin-top: 1.5rem;
+                         font-size: 0.95rem;
+                         color: rgba(248, 245, 237, 0.8);
+                     }
+             
+                     /* Responsive adjustments */
+                     @media (min-width: 640px) {
+                         .card {
+                             width: calc(50% - 2.5rem); /* Two cards per row */
+                         }
+                     }
+                     @media (min-width: 1024px) {
+                         .card {
+                             width: calc(25% - 2.5rem); /* Four cards per row */
+                         }
+                     }
+             
+                     @media (max-width: 768px) {
+                         .navbar {
+                             flex-direction: column;
+                             padding: 1rem 1.5rem;
+                             margin: 1rem 1rem 1.5rem 1rem;
+                         }
+                         .navbar h2 {
+                             font-size: 1.8rem;
+                             margin-bottom: 0.5rem;
+                         }
+                         .navbar .logo-icon {
+                             font-size: 1.8rem; /* Adjust size for mobile */
+                         }
+                         .navbar a {
+                             margin: 0.5rem 0.8rem;
+                             font-size: 0.95rem;
+                         }
+                         .navbar .logout-button {
+                             margin-left: 0;
+                             margin-top: 1rem;
+                         }
+                         header h1 {
+                             font-size: 2.8rem;
+                         }
+                         header p {
+                             font-size: 1.2rem;
+                         }
+                         .card-container {
+                             gap: 1.5rem;
+                             padding: 0 1.5rem;
+                         }
+                         .card {
+                             padding: 1.8rem;
+                         }
+                         .notification, .contact, .about {
+                             padding: 2rem;
+                             margin: 1.5rem 1rem;
+                         }
+                         .notification h4, .contact h4, .about h4 {
+                             font-size: 2rem;
+                             margin-bottom: 1rem;
+                         }
+                         .notification li {
+                             flex-direction: column; /* Stack details and button */
+                             align-items: flex-start;
+                             padding: 1rem;
+                             gap: 0.5rem;
+                         }
+                         .notification li .booking-details {
+                             margin-right: 0;
+                             margin-bottom: 0.5rem;
+                         }
+                         .cancel-button {
+                             width: 100%; /* Full width button */
+                             margin-left: 0;
+                             text-align: center;
+                         }
+                         .footer-links {
+                             flex-direction: column;
+                             align-items: center;
+                         }
+                         .footer-links a {
+                             margin: 0.3rem 0;
+                         }
+                         .social-icons {
+                             gap: 1rem;
+                         }
+                         .social-icons svg {
+                             width: 28px; /* Adjust size for mobile */
+                             height: 28px;
+                         }
+                         .newsletter form {
+                             flex-direction: column;
+                             max-width: 100%;
+                         }
+                         .newsletter input, .newsletter button {
+                             width: 100%;
+                             min-width: unset;
+                         }
+                     }
+                 </style>
+             </head>
+             <body>
+                 <div class="navbar">
+                     <div class="logo-container">
+                         <span class="logo-icon">✈</span> <h2>TravelGo</h2>
+                     </div>
+                     <div>
+                         <a href="#bookings">Bookings</a>
+                         <a href="#contact">Contact</a>
+                         <a href="#about">About</a>
+                         <a href="{{ url_for('others') }}">Others</a>
+                         <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+                     </div>
+                 </div>
+             
+                 <header>
+                     <h1>Welcome to TravelEase</h1>
+                     <p>Your Journey, Our Priority. Book with Confidence and Explore the World.</p>
+                 </header>
+             
+                 <main class="flex flex-col items-center">
+                     <section class="card-container">
+                         <div class="card" onclick="location.href='{{ url_for('hotels') }}'">
+                             <img src="https://images.hindustantimes.com/rf/image_size_960x540/HT/p2/2018/12/15/Pictures/_9f2b6346-ffd3-11e8-9457-b1b429387a4e.jpg" alt="Hotels">
+                             <h3>Hotels</h3>
+                             <p>Discover luxurious stays and cozy retreats worldwide, tailored to your comfort.</p>
+                         </div>
+                         <div class="card" onclick="location.href='{{ url_for('trains_search') }}'">
+                             <img src="https://images.moneycontrol.com/static-mcnews/2023/02/7-budget-representative-image-vande-bharat.jpg?impolicy=website&width=1600&height=900" alt="Trains">
+                             <h3>Trains</h3>
+                             <p>Experience scenic routes and comfortable rail journeys with our extensive network.</p>
+                         </div>
+                         <div class="card" onclick="location.href='{{ url_for('buses_search') }}'">
+                             <img src="https://media.istockphoto.com/id/139994090/photo/red-double-decker-bus-london.jpg?s=612x612&w=0&k=20&c=PcrZglgrhF1DyyvI4Z0FEBUUJsGPWMivFF1alJmDA4A=" alt="Buses">
+                             <h3>Buses</h3>
+                             <p>Affordable and convenient road travel for every destination, from city to city.</p>
+                         </div>
+                         <div class="card" onclick="location.href='{{ url_for('flights_search') }}'">
+                             <img src="https://t4.ftcdn.net/jpg/00/71/31/85/360_F_71318503_9g1UATIOZzwELZg2DZb7w4oaVyenhQkh.jpg" alt="Flights">
+                             <h3>Flights</h3>
+                             <p>Soar to your dream destinations with ease and comfort. Your sky's the limit!</p>
+                         </div>
+                     </section>
+             
+                     <section class="notification" id="bookings">
+                         <h4>Your Latest Bookings</h4>
+                         {% if bookings %}
+                             <ul>
+                                 {% for booking in bookings %}
+                                     <li>
+                                         <div class="booking-details">
+                                             <strong>{{ booking.type | capitalize }} Booking:</strong>
+                                             {% if booking.destination %}
+                                                 To {{ booking.destination }}
+                                             {% endif %}
+                                             {% if booking.start_date and booking.end_date %}
+                                                 from {{ booking.start_date }} to {{ booking.end_date }}
+                                             {% elif booking.start_date %}
+                                                 on {{ booking.start_date }}
+                                             {% endif %}
+                                             {% if booking.booked_at %}
+                                                 (Booked: {{ booking.booked_at.strftime('%Y-%m-%d %H:%M') }})
+                                             {% endif %}
+                                         </div>
+                                         <form action="{{ url_for('cancel_booking', booking_id=booking._id) }}" method="POST" class="inline-block">
+                                             <button type="submit" class="cancel-button">Cancel</button>
+                                         </form>
+                                     </li>
+                                 {% endfor %}
+                             </ul>
+                         {% else %}
+                             <p class="text-center">You haven't made any bookings yet. Start your adventure now!</p>
+                         {% endif %}
+                     </section>
+             
+                     <section class="contact" id="contact">
+                         <h4>Connect With Us</h4>
+                         <p class="text-center">Our dedicated team is here to assist you with any travel inquiries or support you may need. Reach out to us anytime!</p>
+                         <p class="text-center">Email: <span style="color: #DAA520; font-weight: 600;">support@travelease.com</span></p>
+                         <p class="text-center">Phone: <span style="color: #DAA520; font-weight: 600;">+1 (800) 555-TRAVEL</span></p>
+                         <p class="text-center">Address: 456 Wanderlust Way, Global City, Earth</p>
+                     </section>
+             
+                     <section class="about" id="about">
+                         <h4>About TravelEase</h4>
+                         <p class="text-center">At TravelEase, we believe every journey should be effortless and memorable. We are committed to providing a seamless booking experience for all your travel needs, from luxurious hotels to efficient transportation.</p>
+                         <p class="text-center">Our mission is to empower your adventures, ensuring comfort, convenience, and unparalleled service every step of the way. Travel with Ease, Explore with Joy.</p>
+                     </section>
+                 </main>
+             
+                 <footer>
+                     <div class="footer-content">
+                         <div class="footer-links">
+                             <a href="#contact">Contact</a>
+                             <a href="#about">About</a>
+                             <a href="#bookings">Bookings</a>
+                             <a href="{{ url_for('others') }}">Others</a>
+                             <a href="#privacy">Privacy Policy</a>
+                             <a href="#terms">Terms of Service</a>
+                         </div>
+                         <div class="social-icons">
+                             <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.656 9.126 8.438 9.879V14.65H8.053V12h2.385V9.42c0-2.356 1.43-3.64 3.543-3.64 1.018 0 1.902.076 2.164.11v2.535l-1.503.001c-1.189 0-1.424.566-1.424 1.39V12h2.827l-.462 2.65h-2.365v6.23c4.781-.753 8.437-4.888 8.437-9.879C22 6.477 17.523 2 12 2z"/>
+                                 </svg>
+                             </a>
+                             <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                     <path d="M22.46 6c-.77.34-1.6.57-2.46.69.88-.53 1.56-1.37 1.88-2.37-.82.49-1.74.85-2.73 1.05C18.42 4.6 17.2 4 15.82 4c-2.34 0-4.24 1.9-4.24 4.24 0 .33.04.65.11.96-3.52-.18-6.64-1.86-8.73-4.41-.36.62-.56 1.35-.56 2.12 0 1.47.75 2.76 1.89 3.52-.7-.02-1.37-.21-1.95-.5v.05c0 2.06 1.47 3.78 3.42 4.17-.36.1-.74.15-1.13.15-.28 0-.55-.03-.8-.08.54 1.7 2.11 2.93 3.97 2.97-1.46 1.14-3.3 1.82-5.3 1.82-.35 0-.69-.02-1.02-.06C3.96 20.32 6.16 21 8.52 21c7.79 0 12.04-6.46 12.04-12.04 0-.18-.0-.36-.01-.54.83-.6 1.55-1.36 2.11-2.22z"/>
+                                 </svg>
+                             </a>
+                             <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                     <path d="M7.5 2C4.468 2 2 4.468 2 7.5v9C2 19.532 4.468 22 7.5 22h9c3.032 0 5.5-2.468 5.5-5.5v-9C22 4.468 19.532 2 16.5 2h-9zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm6.5-3A1.5 1.5 0 1 0 18.5 7 1.5 1.5 0 0 0 18.5 4z"/>
+                                 </svg>
+                             </a>
+                         </div>
+                         <div class="newsletter">
+                             <h4>Subscribe to Our Exclusive Newsletter</h4>
+                             <form action="#" method="POST">
+                                 <input type="email" placeholder="Enter your email for travel deals" required>
+                                 <button type="submit">Subscribe</button>
+                             </form>
+                         </div>
+                     </div>
+                     <div class="footer-bottom">
+                         <p>&copy; 2025 TravelEase. All rights reserved. | Designed for the Modern Explorer</p>
+                     </div>
+                 </footer>
+             </body>
+             </html>

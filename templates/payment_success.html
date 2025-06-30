@@ -1,0 +1,429 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter font as per instructions */
+            background-color: #e2e8f0; /* Light grayish-blue background for the body */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the start (top) */
+            align-items: center; /* Center horizontally for the main content */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            margin: 0;
+            padding: 1rem; /* Add some padding for smaller screens */
+            box-sizing: border-box;
+            position: relative; /* Needed for absolute positioning of TravelEasy */
+        }
+
+        .website-name {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4f46e5; /* Primary indigo color */
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly translucent background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            z-index: 10; /* Ensure it stays on top */
+        }
+
+        .success-container {
+            background-image: linear-gradient(to bottom right, #a7f3d0, #6ee7b7); /* Green gradient background for success card */
+            color: #166534; /* Dark green text */
+            padding: 2.5rem; /* Generous padding */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Soft, larger shadow */
+            text-align: center;
+            width: 100%;
+            max-width: 550px; /* Max width for the container */
+            box-sizing: border-box;
+            border: 1px solid #34d399; /* Green border */
+            margin-top: 5rem; /* Push content down to make space for the website name */
+            margin-bottom: auto; /* Push container towards the center/top if space allows */
+        }
+
+        .success-icon {
+            font-size: 5rem; /* Large checkmark */
+            color: #10b981; /* Bright green for the icon */
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            animation: bounceIn 0.8s ease-out; /* Add a subtle bounce animation */
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 40%, 60%, 80%, 100% {
+                transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+            0% {
+                opacity: 0;
+                transform: scale3d(0.3, 0.3, 0.3);
+            }
+            20% {
+                transform: scale3d(1.1, 1.1, 1.1);
+            }
+            40% {
+                transform: scale3d(0.9, 0.9, 0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: scale3d(1.03, 1.03, 1.03);
+            }
+            80% {
+                transform: scale3d(0.97, 0.97, 0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+
+        .success-container h2 {
+            font-size: 2.5rem; /* Larger heading */
+            font-weight: 700;
+            color: #065f46; /* Darker green for heading */
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            font-size: 1.1rem;
+            color: #166534;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .booking-details {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Inner shadow for details box */
+            border: 1px dashed #6ee7b7; /* Dashed border for a nice touch */
+        }
+
+        .booking-details h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #34d399;
+            padding-bottom: 0.5rem;
+        }
+
+        .booking-details p {
+            font-size: 1rem;
+            color: #166534;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-details p strong {
+            color: #064e3b; /* Even darker green for strong labels */
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background-image: linear-gradient(to right, #059669, #047857); /* Darker green gradient for home button */
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelEasy</div>
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h2>Booking Confirmed!</h2>
+        <p>Thank you for your booking. A confirmation has been sent to your account.</p>
+
+        <div class="booking-details">
+            <h4>Booking Summary</h4>
+            {% if session.booking_details.type == 'hotels' %}
+                <h3>Hotel Booking</h3>
+                <p><strong>Hotel:</strong> {{ session.booking_details.data.hotel_name }}</p>
+                <p><strong>Location:</strong> {{ session.booking_details.data.location }}</p>
+                <p><strong>Check-in:</strong> {{ session.booking_details.data.check_in }}</p>
+                <p><strong>Check-out:</strong> {{ session.booking_details.data.check_out }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Room Type:</strong> {{ session.booking_details.data.room_type }}</p>
+                {% if session.booking_details.data.special_requests %}
+                    <p><strong>Special Requests:</strong> {{ session.booking_details.data.special_requests }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'trains' %}
+                <h3>Train Booking</h3>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Date:</strong> {{ session.booking_details.data.travel_date }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Class:</strong> {{ session.booking_details.data.train_class }}</p>
+                {% if session.booking_details.data.generated_seats %}
+                    <p><strong>Assigned Seat(s):</strong> {{ session.booking_details.data.generated_seats }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'buses' %} {# MODIFIED: Added bus_id #}
+                <h3>Bus Booking</h3>
+                <p><strong>Bus ID:</strong> {{ session.booking_details.data.bus_id }}</p>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Date:</strong> {{ session.booking_details.data.travel_date }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                {% if session.booking_details.data.selected_seats %}
+                    <p><strong>Selected Seat(s):</strong> {{ session.booking_details.data.selected_seats }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'flights' %}
+                <h3>Flight Booking</h3>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Departure:</strong> {{ session.booking_details.data.departure_date }}</p>
+                {% if session.booking_details.data.return_date %}
+                    <p><strong>Return:</strong> {{ session.booking_details.data.return_date }}</p>
+                {% endif %}
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Class:</strong> {{ session.booking_details.data.flight_class }}</p>
+                {% if session.booking_details.data.generated_seats %}
+                    <p><strong>Assigned Seat(s):</strong> {{ session.booking_details.data.generated_seats }}</p>
+                {% endif %}
+            {% endif %}
+            <p><strong>Payment Method:</strong> {{ session.payment_method }}</p>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #F8F5ED; /* Soft Cream/Off-White */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem; /* Increased padding */
+            box-sizing: border-box;
+            position: relative;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+        }
+
+        .website-name {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; /* Larger font size */
+            font-weight: 700;
+            color: #B8860B; /* Dark Goldenrod */
+            padding: 0.75rem 1.5rem; /* More padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            background-color: rgba(255, 255, 255, 0.9); /* More opaque background */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            z-index: 10;
+            letter-spacing: 0.05em; /* Slight letter spacing */
+        }
+
+        .success-container {
+            background-color: #FFFFFF; /* Pure White */
+            padding: 3.5rem; /* More generous padding */
+            border-radius: 1rem; /* Softer rounded corners */
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15); /* Pronounced, soft shadow */
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Wider for better content display */
+            box-sizing: border-box;
+            border: 1px solid #D4D4D4; /* Thin, light border */
+            margin-top: 7rem; /* Push content down more */
+            margin-bottom: auto;
+        }
+
+        .success-icon {
+            font-size: 6rem; /* Even larger checkmark */
+            color: #6B705C; /* Muted Olive Green for success icon */
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 40%, 60%, 80%, 100% {
+                transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+            0% {
+                opacity: 0;
+                transform: scale3d(0.3, 0.3, 0.3);
+            }
+            20% {
+                transform: scale3d(1.1, 1.1, 1.1);
+            }
+            40% {
+                transform: scale3d(0.9, 0.9, 0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: scale3d(1.03, 1.03, 1.03);
+            }
+            80% {
+                transform: scale3d(0.97, 0.97, 0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        .success-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem; /* Larger heading */
+            font-weight: 700;
+            color: #3A3B3C; /* Deep Charcoal Gray */
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.03em;
+        }
+
+        .success-container p {
+            font-size: 1.25rem; /* Larger text */
+            color: #6B705C; /* Muted Olive Green */
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .booking-details {
+            background-color: #FDFCF9; /* Very light cream */
+            border-radius: 0.75rem;
+            padding: 2.2rem; /* More padding */
+            margin-bottom: 2.5rem;
+            text-align: left;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05); /* Inner shadow */
+            border: 1px dashed #F0E68C; /* Lighter gold dashed border */
+        }
+
+        .booking-details h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; /* Larger title */
+            font-weight: 700;
+            color: #B8860B; /* Dark Goldenrod */
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #F0E68C; /* Lighter gold underline */
+            padding-bottom: 0.8rem;
+        }
+
+        .booking-details p {
+            font-size: 1.15rem; /* Slightly larger text */
+            color: #6B705C; /* Muted Olive Green */
+            margin-bottom: 0.6rem;
+        }
+
+        .booking-details p strong {
+            color: #3A3B3C; /* Deep Charcoal Gray */
+            font-weight: 600;
+        }
+
+        .home-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1.2rem 2.5rem; /* More padding */
+            background-color: #B8860B; /* Dark Goldenrod */
+            color: white;
+            text-decoration: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.3rem; /* Larger font */
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.05em;
+        }
+
+        .home-button:hover {
+            background-color: #DAA520; /* Lighter Goldenrod on hover */
+            transform: translateY(-4px); /* More lift */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="website-name">TravelGo</div>
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h2>Booking Confirmed!</h2>
+        <p>Your adventure awaits! A detailed confirmation has been sent to your registered contact.</p>
+
+        <div class="booking-details">
+            <h4>Booking Summary</h4>
+            {% if session.booking_details.type == 'hotels' %}
+                <h3>Hotel Booking</h3>
+                <p><strong>Hotel:</strong> {{ session.booking_details.data.hotel_name }}</p>
+                <p><strong>Location:</strong> {{ session.booking_details.data.location }}</p>
+                <p><strong>Check-in:</strong> {{ session.booking_details.data.check_in }}</p>
+                <p><strong>Check-out:</strong> {{ session.booking_details.data.check_out }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Room Type:</strong> {{ session.booking_details.data.room_type }}</p>
+                {% if session.booking_details.data.special_requests %}
+                    <p><strong>Special Requests:</strong> {{ session.booking_details.data.special_requests }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'trains' %}
+                <h3>Train Booking</h3>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Date:</strong> {{ session.booking_details.data.travel_date }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Class:</strong> {{ session.booking_details.data.train_class }}</p>
+                {% if session.booking_details.data.generated_seats %}
+                    <p><strong>Assigned Seat(s):</strong> {{ session.booking_details.data.generated_seats }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'buses' %} {# MODIFIED: Added bus_id #}
+                <h3>Bus Booking</h3>
+                <p><strong>Bus ID:</strong> {{ session.booking_details.data.bus_id }}</p>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Date:</strong> {{ session.booking_details.data.travel_date }}</p>
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                {% if session.booking_details.data.selected_seats %}
+                    <p><strong>Selected Seat(s):</strong> {{ session.booking_details.data.selected_seats }}</p>
+                {% endif %}
+            {% elif session.booking_details.type == 'flights' %}
+                <h3>Flight Booking</h3>
+                <p><strong>Route:</strong> {{ session.booking_details.data.source }} to {{ session.booking_details.data.destination }}</p>
+                <p><strong>Departure:</strong> {{ session.booking_details.data.departure_date }}</p>
+                {% if session.booking_details.data.return_date %}
+                    <p><strong>Return:</strong> {{ session.booking_details.data.return_date }}</p>
+                {% endif %}
+                <p><strong>Adults:</strong> {{ session.booking_details.data.adults }}</p>
+                <p><strong>Children:</strong> {{ session.booking_details.data.children }}</p>
+                <p><strong>Class:</strong> {{ session.booking_details.data.flight_class }}</p>
+                {% if session.booking_details.data.generated_seats %}
+                    <p><strong>Assigned Seat(s):</strong> {{ session.booking_details.data.generated_seats }}</p>
+                {% endif %}
+            {% endif %}
+            <p><strong>Payment Method:</strong> {{ session.payment_method }}</p>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="home-button">Back to Home</a>
+    </div>
+</body>
+</html>
