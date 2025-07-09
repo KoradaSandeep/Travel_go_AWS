@@ -8,10 +8,10 @@ app = Flask(__name__)
 app.secret_key = 'f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a'
 
 # AWS Configuration (replace with your actual region and SNS Topic ARN)
-AWS_REGION = 'ap-south-1'  # Example: Mumbai region
+AWS_REGION = 'us-east-1'  # Example: Mumbai region
 USERS_TABLE_NAME = 'travel_app_users'
 BOOKINGS_TABLE_NAME = 'travel_app_bookings'
-SNS_TOPIC_ARN = 'arn:aws:sns:ap-south-1:123456789012:TravelAppBookings' # Replace with your SNS Topic ARN
+SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:682033465674:Travelgo:074030e8-4ca8-4d4e-8717-5deb1bffeef6' # Replace with your SNS Topic ARN
 
 # Initialize DynamoDB and SNS clients
 dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
